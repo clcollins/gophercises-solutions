@@ -36,17 +36,22 @@ func main() {
 		log.Fatal(csvOpenFailed)
 	}
 
+	// csv.NewReader implements the buffio.Reader
 	reader := csv.NewReader(input)
 
+	// iterate over the contents of the file
 	for {
 		i, err := reader.Read()
+		// end of the file returns an io.EOF error, so handle this
 		if err == io.EOF {
 			break
 		}
+		// any other error is a problem
 		if err != nil {
 			log.Fatalf("%s: %s", csvReadFailed, err)
-			break
 		}
+
+		// we know our csv is in "question/answer" pairs per line
 		fmt.Println(i[0], i[1])
 	}
 }
